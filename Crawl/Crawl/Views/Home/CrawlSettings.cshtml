@@ -1,0 +1,21 @@
+﻿@model Crawl.Crawler.CrawlSettings
+@{
+    Layout = "../Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>CrawlSettings</title>
+</head>
+<body>
+    <div> 
+        @Html.EditorFor(m=>m.CrawConfiguration)
+    </div>
+    <div>
+        @Html.EditorFor(m => m.TargetUri)
+    </div>
+</body>
+</html>
