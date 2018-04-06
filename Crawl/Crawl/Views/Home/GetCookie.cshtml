@@ -1,0 +1,23 @@
+﻿@model Crawl.Crawler.RequestParameters
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetCookie</title>
+</head>
+<body>
+    <div> 
+        @using (Html.BeginForm())
+        {
+            @Html.EditorForModel()
+            <button type="submit">OK</button>
+        }
+    </div>
+</body>
+</html>

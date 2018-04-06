@@ -272,11 +272,20 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="Crawler\Cookie\CookieBlock.cs" />
+    <Compile Include="Crawler\Cookie\CookieRequestContext.cs" />
+    <Compile Include="Crawler\Cookie\CookieStoreStrategy.cs" />
+    <Compile Include="Crawler\Cookie\DefaultCookieStorage.cs" />
+    <Compile Include="Crawler\Cookie\ICookieStorage.cs" />
     <Compile Include="Crawler\CrawlSettings.cs" />
     <Compile Include="Crawler\MyCrawlService.cs" />
+    <Compile Include="Crawler\Requester\AuthenticPageRequester.cs" />
+    <Compile Include="Crawler\Requester\CookieRequester.cs" />
+    <Compile Include="Crawler\RequestParameters.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logger\ILog.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -350,6 +359,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\CrawlSettings.cshtml" />
+    <Content Include="Views\Home\GetCookie.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

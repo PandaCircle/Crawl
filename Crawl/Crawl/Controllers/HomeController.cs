@@ -1,5 +1,7 @@
 ﻿using Abot.Poco;
 using Crawl.Crawler;
+using Crawl.Crawler.Cookie;
+using Crawl.Crawler.Requester;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,6 @@ namespace Crawl.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-
             return View();
         }
 
@@ -21,6 +22,19 @@ namespace Crawl.Controllers
         {
             CrawlSettings config = new CrawlSettings();
             return View(config);
+        }
+
+        public ActionResult GetCookie()
+        {
+            RequestParameters parameters = new RequestParameters();
+            return View(parameters);
+        }
+        [HttpPost,ActionName("GetCookie")]
+        public ActionResult GetCookiePost(RequestParameters param)
+        {
+            CookieRequester re = new CookieRequester(param, new Crawler.CrawlSettings(), DefaultCookieStorage.GetInstance());
+            re.Excute();
+            return View();
         }
 
     }
