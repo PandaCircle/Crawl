@@ -12,7 +12,7 @@ namespace Crawl.Crawler
         public CrawlSettings()
         {
             CrawConfiguration = new CrawlConfiguration();
-            CookieContainer = new CookieContainer();
+            CookieContainer = null;
         }
 
         public CrawlConfiguration CrawConfiguration { get; set; }

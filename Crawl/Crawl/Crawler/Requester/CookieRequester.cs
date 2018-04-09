@@ -12,65 +12,74 @@ namespace Crawl.Crawler.Requester
 {
     public class CookieRequester
     {
-        private readonly RequestParameters _requestParameters;
-        private readonly CrawlSettings _crawlSettings;
-        private readonly ICookieStorage _cookieStorage;
 
-        public CookieRequester
-            (
-               RequestParameters requestParameters,
-               CrawlSettings crawlSettings,
-               ICookieStorage cookieStorage
-            )
+        public static RequestContext BuildRequestContext(CrawlSettings settings, RequestArgs args)
         {
-            _requestParameters = requestParameters;
-            _crawlSettings = crawlSettings;
-            _cookieStorage = cookieStorage;
+            RequestContext requestContext = new RequestContext();
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(args.RequestUri));
+            request.Method = "POST";
+            request.Accept = "*/*";
+            request.UserAgent = settings.CrawConfiguration.UserAgentString;
+
+            byte[] transferData = Encoding.UTF8.GetBytes(args.PostParameters);
+            request.ContentLength = transferData.Length;
+
+            using (Stream stream = request.GetRequestStream())
+            {
+                stream.Write(transferData, 0, transferData.Length);
+            }
+            requestContext.Request = request;
+
+            return requestContext;
         }
 
-        public ILog Log = LogManager.GetLogger("logger");
-
-        public CookieContainer GetCookie()
+        public static CrawlSettings PostRequest(CrawlSettings settings,RequestArgs args)
         {
             CookieContainer cookie = null;
 
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(_requestParameters.RequestUri));
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(new Uri(args.RequestUri));
             request.Method = "POST";
             request.Accept = "*/*";
-            request.UserAgent = _crawlSettings.CrawConfiguration.UserAgentString;
+            request.UserAgent = settings.CrawConfiguration.UserAgentString;
 
-            byte[] transferData = Encoding.UTF8.GetBytes(_requestParameters.PostParameters);
+            byte[] transferData = Encoding.UTF8.GetBytes(args.PostParameters);
             request.ContentLength = transferData.Length;
 
-            using(Stream stream = request.GetRequestStream())
+            using (Stream stream = request.GetRequestStream())
             {
-                stream.Write(transferData,0,transferData.Length);
+                stream.Write(transferData, 0, transferData.Length);
             }
 
             HttpWebResponse response = null;
             try { response = (HttpWebResponse)request.GetResponse(); }
-            catch(WebException e)
-            {               
-                Log.Error(string.Format("Server Return Error :{0}", e.Message));
-            }
-            catch(Exception e)
+            catch (WebException e)
             {
-                Log.Error(string.Format("Error occured when getting cookie , Reason :{0}", e.Message));
+                response = (HttpWebResponse)e.Response;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(string.Format("Error occured when getting cookie , Reason :{0}", e.Message));
             }
 
             //handle error code 
-            if (response == null) return;
-
-            if(response.StatusCode != HttpStatusCode.OK)
+            if (response != null)
             {
-                Log.Error(string.Format("Server Return StatusCode {0}", response.StatusCode));
-                return ;
+                Console.WriteLine(string.Format("Server Return StatusCode {0}", response.StatusCode));
+                if(response.StatusCode == HttpStatusCode.OK)
+                {
+                    cookie.Add(response.Cookies);
+                    settings.CookieContainer = cookie;
+                    Console.WriteLine(string.Format("Cookie (key:{0}) is achieved", args.RequestUri));
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Response From Server");
             }
 
-            Log.Info(string.Format("Cookie (key:{0}) is achieved", _requestParameters.RequestUri));
-           
-        }
+            return settings;   
 
+        }
 
 
     }

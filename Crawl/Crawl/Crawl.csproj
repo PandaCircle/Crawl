@@ -273,7 +273,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Crawler\Cookie\CookieBlock.cs" />
-    <Compile Include="Crawler\Cookie\CookieRequestContext.cs" />
     <Compile Include="Crawler\Cookie\CookieStoreStrategy.cs" />
     <Compile Include="Crawler\Cookie\DefaultCookieStorage.cs" />
     <Compile Include="Crawler\Cookie\ICookieStorage.cs" />
@@ -281,7 +280,8 @@
     <Compile Include="Crawler\MyCrawlService.cs" />
     <Compile Include="Crawler\Requester\AuthenticPageRequester.cs" />
     <Compile Include="Crawler\Requester\CookieRequester.cs" />
-    <Compile Include="Crawler\RequestParameters.cs" />
+    <Compile Include="Crawler\RequestArgs.cs" />
+    <Compile Include="Crawler\Requester\RequestContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

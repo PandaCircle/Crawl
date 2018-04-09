@@ -2,6 +2,7 @@
 using Crawl.Crawler;
 using Crawl.Crawler.Cookie;
 using Crawl.Crawler.Requester;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,14 @@ namespace Crawl.Controllers
 
         public ActionResult GetCookie()
         {
-            RequestParameters parameters = new RequestParameters();
+            RequestArgs parameters = new RequestArgs();
             return View(parameters);
         }
         [HttpPost,ActionName("GetCookie")]
-        public ActionResult GetCookiePost(RequestParameters param)
+        public ActionResult GetCookiePost(RequestArgs param)
         {
-            CookieRequester re = new CookieRequester(param, new Crawler.CrawlSettings(), DefaultCookieStorage.GetInstance());
-            re.Excute();
+            ILog log = LogManager.GetLogger("cookielog");
+            CookieRequester.PostRequest(new CrawlSettings(), param);
             return View();
         }
 
